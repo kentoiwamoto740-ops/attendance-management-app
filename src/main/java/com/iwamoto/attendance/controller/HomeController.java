@@ -1,4 +1,4 @@
-package com.iwamoto.attendance;
+package com.iwamoto.attendance.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

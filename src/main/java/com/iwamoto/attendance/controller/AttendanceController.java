@@ -13,12 +13,24 @@ public class AttendanceController {
         this.attendanceService = attendanceService;
     }
 
+    //出勤
     @PostMapping("/start")
     public String startWork() {
 
         Long userId = 1L;
 
         attendanceService.startWork(userId);
+
+        return "redirect:/";
+    }
+
+    //退勤
+    @PostMapping("/end")
+    public String endWork() {
+
+        Long userId = 1L;
+
+        attendanceService.endWork(userId);
 
         return "redirect:/";
     }

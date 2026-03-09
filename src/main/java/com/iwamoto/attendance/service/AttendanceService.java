@@ -19,6 +19,12 @@ public class AttendanceService {
     // 出勤打刻
     public void startWork(Long userId) {
 
+        Attendance existing = attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
+
+        if (existing != null) {
+            throw new IllegalStateException("すでに出勤済みです");
+        }
+
         Attendance attendance = new Attendance();
         attendance.setUserId(userId);
         attendance.setWorkDate(LocalDate.now());
@@ -28,13 +34,19 @@ public class AttendanceService {
     }
 
     // 退勤打刻
-    public void endWork(Long attendanceId) {
+    public void endWork(Long userId) {
 
-        Attendance attendance = attendanceRepository.findById(attendanceId).orElse(null);
+        Attendance attendance = attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
 
-        if (attendance != null) {
-            attendance.setEndTime(LocalDateTime.now());
-            attendanceRepository.save(attendance);
+        if (attendance == null) {
+            throw new RuntimeException("出勤打刻がありません");
         }
+
+        if (attendance.getEndTime() != null) {
+            throw new IllegalStateException("すでに退勤済みです");
+        }
+        attendance.setEndTime(LocalDateTime.now());
+
+        attendanceRepository.save(attendance);
     }
 }

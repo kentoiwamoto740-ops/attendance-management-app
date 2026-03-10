@@ -3,15 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>勤怠管理</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <h1>勤怠管理アプリ</h1>
 
-    <form action="/start" method="post">
-        <button type="submit">出勤</button>
-    </form>
-    <form action="/end" method="post">
-        <button type="submit">退勤</button>
-    </form>
+    <p>今日の日付: <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"></span></p>
+
+    <div class="attendance-box" th:if="${attendance == null}">
+        <p>未出勤です</p>
+        <form action="/start" method="post">
+            <button type="submit">出勤</button>
+        </form>
+    </div>
+
+    <div class="attendance-box" th:if="${attendance != null and attendance.endTime == null}">
+        <p>出勤時間: <span th:text="${#temporals.format(attendance.startTime, 'HH:mm')}"></span></p>
+        <p>勤務中</p>
+        <form action="/end" method="post">
+            <button type="submit">退勤</button>
+        </form>
+    </div>
+
+    <div class="attendance-box" th:if="${attendance != null and attendance.endTime != null}">
+        <p>出勤時間: <span th:text="${#temporals.format(attendance?.startTime, 'HH:mm')}"></span></p>
+        <p>退勤時間: <span th:text="${#temporals.format(attendance?.endTime, 'HH:mm')}"></span></p>
+        <p>本日は勤務終了です。</p>
+    </div>
 </body>
 </html>

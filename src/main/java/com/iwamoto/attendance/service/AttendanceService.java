@@ -49,4 +49,8 @@ public class AttendanceService {
 
         attendanceRepository.save(attendance);
     }
+
+    public Attendance getTodayAttendance(Long userId){
+        return attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
+    }
 }

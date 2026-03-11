@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AttendanceService {
@@ -50,7 +51,13 @@ public class AttendanceService {
         attendanceRepository.save(attendance);
     }
 
+    //
     public Attendance getTodayAttendance(Long userId){
         return attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
+    }
+
+    //
+    public List<Attendance> getAttendanceHistory(Long userId) {
+        return attendanceRepository.findByUserIdOrderByWorkDateDesc(userId);
     }
 }

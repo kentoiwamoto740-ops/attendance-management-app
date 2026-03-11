@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>勤怠履歴</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>勤怠履歴</h1>
+
+    <table class="attendance-table">
+        <thead>
+            <tr>
+                <th>日付</th>
+                <th>出勤時間</th>
+                <th>退勤時間</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="attendance, iterStat : ${attendanceList}">
+                <td th:text="${iterStat.index + 1}">1</td>
+                <td th:text="${attendance.workDate}"></td>
+                <td th:text="${attendance.startTime}"></td>
+                <td th:text="${attendance.endTime}"></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</body>
+</html>

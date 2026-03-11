@@ -1,10 +1,14 @@
 package com.iwamoto.attendance.controller;
 
+import com.iwamoto.attendance.entity.Attendance;
 import com.iwamoto.attendance.service.AttendanceService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class AttendanceController {
@@ -16,10 +20,15 @@ public class AttendanceController {
     }
 
     //トップ画面
-    @GetMapping("/")
-    public String home(Model model) {
+    @GetMapping("/home")
+    public String home(Model model, HttpSession session) {
 
-        Long userId = 1L;
+        //Long userId = 1L;
+        Long userId = (Long) session.getAttribute("userId");
+
+        if (userId == null) {
+            return "redirect:/login";
+        }
 
         var attendance = attendanceService.getTodayAttendance(userId);
 
@@ -30,23 +39,38 @@ public class AttendanceController {
 
     //出勤
     @PostMapping("/start")
-    public String startWork() {
+    public String startWork(HttpSession session) {
 
-        Long userId = 1L;
+        //Long userId = 1L;
+        Long userId = (Long) session.getAttribute("userId");
 
         attendanceService.startWork(userId);
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 
     //退勤
     @PostMapping("/end")
-    public String endWork() {
+    public String endWork(HttpSession session) {
 
-        Long userId = 1L;
+        //Long userId = 1L;
+        Long userId = (Long) session.getAttribute("userId");
 
         attendanceService.endWork(userId);
 
-        return "redirect:/";
+        return "redirect:/home";
+    }
+
+    //履歴
+    @GetMapping("/history")
+    public String history(Model model, HttpSession session) {
+        //Long userId = 1L;
+        Long userId = (Long) session.getAttribute("userId");
+
+        List<Attendance> attendanceList = attendanceService.getAttendanceHistory(userId);
+        model.addAttribute("attendance", attendanceList);
+
+        return "attendance_history";
+
     }
 }

@@ -29,3 +29,14 @@ button:hover{
     background-color: #0056b3;
     cursor: pointer;
 }
+
+.attendance-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+.attendance-table th,
+.attendance-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+}

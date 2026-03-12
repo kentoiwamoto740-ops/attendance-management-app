@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ダッシュボード</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+<div class="dashboard-container">
+    <h1>ホーム</h1>
+
+    <div class="card">
+      <a th:href="@{/home}" class="menu-button">勤怠登録</a>
+
+      <a th:href="@{/attendance_history}" class="menu-button">勤怠履歴</a>
+    </div>
+
+    <form th:action="@{/logout}" method="post" class="logout-form">
+      <button type="submit">ログアウト</button>
+    </form>
+
+</div>
+
+</body>
+</html>

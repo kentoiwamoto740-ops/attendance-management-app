@@ -40,3 +40,36 @@ button:hover{
     border: 1px solid #ccc;
     padding: 8px;
 }
+
+/* ダッシュボード用コンテナ */
+.dashboard-container {
+    text-align: center;
+}
+
+/* メニューボタン（勤怠登録・履歴など） */
+.menu-button {
+    display: block;
+    width: 220px;
+    margin: 15px auto;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.menu-button:hover {
+    background-color: #45a049;
+}
+
+/* カードデザイン */
+.card {
+    background-color: white;
+    padding: 25px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+

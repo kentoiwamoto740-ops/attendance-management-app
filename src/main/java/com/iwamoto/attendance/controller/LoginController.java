@@ -43,6 +43,14 @@ public class LoginController {
         session.setAttribute("userId", user.getId());
 
         //勤怠画面へ
-        return "redirect:/home";
+        return "redirect:/dashboard";
+    }
+
+    //ログアウト
+    @PostMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+
+        return "redirect:/login";
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>勤怠管理</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <h1>勤怠管理アプリ</h1>
@@ -30,5 +30,9 @@
         <p>退勤時間: <span th:text="${#temporals.format(attendance?.endTime, 'HH:mm')}"></span></p>
         <p>本日は勤務終了です。</p>
     </div>
+
+    <form th:action="@{/logout}" method="post" class="logout-form">
+        <button type="submit" class="logout-button">ログアウト</button>
+    </form>
 </body>
 </html>

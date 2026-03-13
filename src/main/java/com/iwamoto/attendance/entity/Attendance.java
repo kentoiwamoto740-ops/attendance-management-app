@@ -1,6 +1,8 @@
 package com.iwamoto.attendance.entity;
 
 import jakarta.persistence.*;
+
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -57,5 +59,19 @@ public class Attendance {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public String getWorkingHours(){
+
+        if(startTime == null || endTime == null){
+            return "";
+        }
+
+        Duration duration = Duration.between(startTime, endTime);
+
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes() % 60;
+
+        return hours + "時間" + minutes +"分";
     }
 }

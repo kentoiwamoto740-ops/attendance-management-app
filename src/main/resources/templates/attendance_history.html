@@ -8,20 +8,25 @@
 <body>
     <h1>勤怠履歴</h1>
 
+    <h2>今月の勤務時間合計: <span th:text="${totalWorkTime}"></span></h2>
+
     <table class="attendance-table">
         <thead>
             <tr>
+                <th>No</th>
                 <th>日付</th>
                 <th>出勤時間</th>
                 <th>退勤時間</th>
+                <th>勤務時間</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="attendance, iterStat : ${attendanceList}">
+            <tr th:each="attendance, iterStat : ${attendance}">
                 <td th:text="${iterStat.index + 1}">1</td>
-                <td th:text="${attendance.workDate}"></td>
-                <td th:text="${attendance.startTime}"></td>
-                <td th:text="${attendance.endTime}"></td>
+                <td th:text="${#temporals.format(attendance.workDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#temporals.format(attendance.startTime, 'HH:mm')}"></td>
+                <td th:text="${#temporals.format(attendance.endTime, 'HH:mm')}"></td>
+                <td th:text="${attendance.workingHours}"></td>
             </tr>
         </tbody>
 

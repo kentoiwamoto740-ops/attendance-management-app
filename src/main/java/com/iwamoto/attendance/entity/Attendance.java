@@ -21,6 +21,10 @@ public class Attendance {
 
     private LocalDateTime endTime;
 
+    private LocalDateTime breakStartTime;
+
+    private LocalDateTime breakEndTime;
+
     public Long getId() {
         return id;
     }
@@ -40,6 +44,10 @@ public class Attendance {
     public LocalDateTime getEndTime() {
         return endTime;
     }
+
+    public LocalDateTime getBreakStartTime() { return breakStartTime; }
+
+    public LocalDateTime getBreakEndTime() { return breakEndTime; }
 
     public void setId(Long id) {
         this.id = id;
@@ -69,9 +77,20 @@ public class Attendance {
 
         Duration duration = Duration.between(startTime, endTime);
 
+        // 休憩時間を引く
+        if(breakStartTime != null && breakEndTime != null){
+            Duration breakDuration = Duration.between(breakStartTime, breakEndTime);
+            duration = duration.minus(breakDuration);
+        }
+
         long hours = duration.toHours();
         long minutes = duration.toMinutes() % 60;
 
         return hours + "時間" + minutes +"分";
     }
+
+    public void setBreakStartTime (LocalDateTime breakStartTime){ this.breakStartTime = breakStartTime; }
+
+    public void setBreakEndTime (LocalDateTime breakEndTime){ this.breakEndTime = breakEndTime; }
+
 }

@@ -20,7 +20,10 @@ public class AttendanceService {
     // 出勤打刻
     public void startWork(Long userId) {
 
-        Attendance existing = attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
+        //Attendance existing = attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
+        Attendance existing = attendanceRepository
+                .findByUserIdAndWorkDate(userId, LocalDate.now())
+                .orElse(null);
 
         if (existing != null) {
             throw new IllegalStateException("すでに出勤済みです");
@@ -37,11 +40,10 @@ public class AttendanceService {
     // 退勤打刻
     public void endWork(Long userId) {
 
-        Attendance attendance = attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
-
-        if (attendance == null) {
-            throw new RuntimeException("出勤打刻がありません");
-        }
+        //Attendance attendance = attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
+        Attendance attendance = attendanceRepository
+                .findByUserIdAndWorkDate(userId, LocalDate.now())
+                .orElseThrow(() -> new RuntimeException("出勤打刻がありません"));
 
         if (attendance.getEndTime() != null) {
             throw new IllegalStateException("すでに退勤済みです");
@@ -53,11 +55,51 @@ public class AttendanceService {
 
     //
     public Attendance getTodayAttendance(Long userId){
-        return attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
+        //return attendanceRepository.findByUserIdAndWorkDate(userId, LocalDate.now());
+        return attendanceRepository
+                .findByUserIdAndWorkDate(userId, LocalDate.now())
+                .orElse(null);
     }
 
     //
     public List<Attendance> getAttendanceHistory(Long userId) {
         return attendanceRepository.findByUserIdOrderByWorkDateDesc(userId);
+    }
+
+    public void startBreak(Long userId) {
+
+        Attendance attendance = attendanceRepository
+                .findByUserIdAndWorkDate(userId, LocalDate.now())
+                .orElseThrow(() -> new IllegalStateException("出勤していません"));
+
+        if (attendance.getEndTime() != null) {
+            throw new IllegalStateException("すでに退勤しています");
+        }
+
+        if (attendance.getBreakStartTime() != null) {
+            throw new IllegalStateException("すでに休憩開始しています");
+        }
+        attendance.setBreakStartTime(LocalDateTime.now());
+
+        attendanceRepository.save(attendance);
+    }
+
+    public void endBreak(Long userId) {
+
+        Attendance attendance = attendanceRepository
+                .findByUserIdAndWorkDate(userId, LocalDate.now())
+                .orElseThrow(() -> new IllegalStateException("出勤していません"));
+
+        if (attendance.getBreakStartTime() == null) {
+            throw new IllegalStateException("休憩開始していません");
+        }
+
+        if (attendance.getBreakEndTime() != null) {
+            throw new IllegalStateException("すでに休憩終了しています");
+        }
+
+        attendance.setBreakEndTime(LocalDateTime.now());
+
+        attendanceRepository.save(attendance);
     }
 }

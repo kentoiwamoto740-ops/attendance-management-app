@@ -18,6 +18,11 @@ public class LoginController {
         this.userService = userService;
     }
 
+    @GetMapping("/")
+    public String root() {
+        return "redirect:/login";
+    }
+
     //ログイン画面表示
     @GetMapping("/login")
     public String loginForm() {

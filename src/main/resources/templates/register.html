@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ユーザー登録</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+<body>
+
+<h1>ユーザー登録</h1>
+
+<!-- エラーメッセージ -->
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+<form action="/register" method="post">
+
+    <div>
+        <input type="text" name="username" placeholder="ユーザー名" required>
+    </div>
+
+    <div>
+        <input type="email" name="email" placeholder="メールアドレス" required>
+    </div>
+
+    <div>
+        <input type="password" name="password" placeholder="パスワード" required>
+    </div>
+
+    <button type="submit">登録</button>
+
+</form>
+
+<p>
+    <a th:href="@{/login}">ログインはこちら</a>
+</p>
+
+</body>
+</html>

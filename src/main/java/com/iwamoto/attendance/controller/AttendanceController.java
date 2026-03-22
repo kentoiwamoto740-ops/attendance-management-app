@@ -2,14 +2,18 @@ package com.iwamoto.attendance.controller;
 
 import com.iwamoto.attendance.entity.Attendance;
 import com.iwamoto.attendance.service.AttendanceService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -139,5 +143,52 @@ public class AttendanceController {
         attendanceService.endBreak(userId);
 
         return "redirect:/attendance";
+    }
+
+    //CSVダウンロード
+    @GetMapping("/attendance/csv")
+    public void downloadCsv(HttpServletResponse response, HttpSession session) throws IOException {
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        // CSV設定
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=attendance.csv");
+
+        // データ取得
+        List<Attendance> attendanceList = attendanceService.getAttendanceHistory(userId);
+
+        // 書き込み準備
+        response.setContentType("text/csv; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.write("\uFEFF");
+
+        // ヘッダー
+        writer.println("日付,出勤時間,退勤時間,勤務時間");
+
+        // フォーマット
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        // データ書き込み
+        for (Attendance a : attendanceList) {
+
+            String workDate = a.getWorkDate().toString();
+
+            String startTime = (a.getStartTime() != null)
+                    ? a.getStartTime().format(timeFormatter)
+                    : "";
+
+            String endTime = (a.getEndTime() != null)
+                    ? a.getEndTime().format(timeFormatter)
+                    : "";
+
+            String workingHours = (a.getWorkingHours() != null)
+                    ? a.getWorkingHours()
+                    : "";
+            writer.println(workDate + "," + startTime + "," + endTime + "," + workingHours);
+        }
+
+        writer.flush();
     }
 }

@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>勤怠履歴</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/history.css}"></head>
 <body>
     <h1>勤怠履歴</h1>
+
+    <div class="navbar">
+        <a th:href="@{/dashboard}">ダッシュボード</a>
+        <a th:href="@{/attendance}">勤怠登録</a>
+        <a th:href="@{/history}">勤怠履歴</a>
+    </div>
 
     <h2>今月の勤務時間合計: <span th:text="${totalWorkTime}"></span></h2>
 
@@ -29,8 +35,7 @@
                 <td th:text="${attendance.workingHours}"></td>
             </tr>
         </tbody>
-
     </table>
-
+    <a href="/attendance/csv">CSVダウンロード</a>
 </body>
 </html>

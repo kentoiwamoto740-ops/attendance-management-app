@@ -1,0 +1,11 @@
+.attendance-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.attendance-table th,
+.attendance-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+}

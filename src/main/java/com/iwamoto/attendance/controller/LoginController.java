@@ -36,19 +36,17 @@ public class LoginController {
                         HttpSession session,
                         Model model){
 
-        User user = userService.login(username, password);
-
-        //ログイン失敗
-        if(user == null){
-            model.addAttribute("error", "ユーザー名またはパスワードが違います");
+        try{
+            User user = userService.login(username, password);
+            //セッション保存
+            session.setAttribute("userId", user.getId());
+            //勤怠画面へ
+            return "redirect:/dashboard";
+        } catch (IllegalStateException e) {
+            //ログイン失敗
+            model.addAttribute("error", e.getMessage());
             return "login";
         }
-
-        //セッション保存
-        session.setAttribute("userId", user.getId());
-
-        //勤怠画面へ
-        return "redirect:/dashboard";
     }
 
     //ログアウト

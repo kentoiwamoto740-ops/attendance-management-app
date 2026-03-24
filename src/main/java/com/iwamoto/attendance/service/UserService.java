@@ -22,16 +22,21 @@ public class UserService {
         User user = userRepository.findByUsername(username);
 
         //
+//        if(user == null){
+//            return null;
+//        }
         if(user == null){
-            return null;
+            throw new IllegalStateException("ユーザーが存在しません");
         }
-
         //
 //        if(!user.getPassword().equals(password)){
 //            return null;
 //        }
+//        if(!passwordEncoder.matches(password, user.getPassword())){
+//            return null;
+//        }
         if(!passwordEncoder.matches(password, user.getPassword())){
-            return null;
+            throw new IllegalStateException("パスワードが違います");
         }
 
         return user;
